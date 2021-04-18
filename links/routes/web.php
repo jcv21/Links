@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LinkController;
 use App\Models\Link;
 use Illuminate\Http\Request;
 
@@ -32,14 +33,4 @@ Route::get('/submit', function(){
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::post('/submit', function(Request $request){
-    $data = $request->validate([
-        'title' => 'required|max:255',
-        'url' => 'required|url|max:255',
-        'description' => 'required|max:255',
-    ]);
-
-    $link = tap(new App\Models\Link($data))->save();
-
-    return redirect('/');
-});
+Route::post('/submit', [LinkController::class, 'add']);
